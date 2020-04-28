@@ -1,4 +1,4 @@
-Springer is giving out free books
+Springer is giving out free books. Go get them.
 
 ## Usage
 
@@ -8,5 +8,4 @@ Run the python script as `$ python get_books.py` to download both PDFs and Ebook
 This will name every file and separate them in folders.
 
 ### Option 2
-Run the bash script to download only the PDF version (possibly faster) but
-without names.
+Run the bash script as `$ ./get_books.sh` (do `$ chmod +x get_books.sh`) to download only the PDF version (possibly faster) but without names.
