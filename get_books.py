@@ -105,14 +105,19 @@ class Downloader:
             try:
                 bookWebUrl = urllib.request.urlopen(link_book)
                 # Creamos un archivo para almacenar el PDF con el nombre
-                with open('{}/{}.pdf'.format(book_directory, name), 'wb') as file_name:    
-                    # Obtenemos la web (que es el PDF)
-                    req = requests.get(bookWebUrl.url)
-                    # Grabamos el contenido de la web
-                    file_name.write(req.content)
+                if book_directory == self.pdf_directory:
+                    file_extension = ".pdf"
+                    with open('{}/{}.{}'.format(book_directory, name, file_extension), 'wb') as file_name:    
+                        # Obtenemos la web (que es el PDF)
+                        req = requests.get(bookWebUrl.url)
+                        # Grabamos el contenido de la web
+                        file_name.write(req.content)
+                else:
+                    file_extension = ".epub"
+                    urllib.request.urlretrieve(bookWebUrl, '{}/{}.{}'.format(book_directory, name, file_extension))
             except Exception:  # urllib.error.URLError=="HTTP Error 404: Not Found":
                 print("\tNo se encuentra el documento {}...(snip).".format(name[:15]))
-                print("\tQuizas no tenga ebook.")
+                # print("\tQuizas no tenga ebook.")
 
     def download(self):
         page_links_list, pdf_links_list, epub_links_list = self.get_files()
