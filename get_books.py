@@ -2,6 +2,7 @@ import urllib.request
 from bs4 import BeautifulSoup
 import requests
 import os
+import shutil
 
 class Downloader:
 
@@ -62,7 +63,7 @@ class Downloader:
 
         with open(self.page_links) as f:
             page_links_list = f.read().splitlines()
-            
+
         with open(self.pdf_links) as f:
             pdf_links_list = f.read().splitlines()
 
@@ -105,18 +106,29 @@ class Downloader:
             try:
                 bookWebUrl = urllib.request.urlopen(link_book)
                 # Creamos un archivo para almacenar el PDF con el nombre
-                with open('{}/{}.pdf'.format(book_directory, name), 'wb') as file_name:    
-                    # Obtenemos la web (que es el PDF)
-                    req = requests.get(bookWebUrl.url)
-                    # Grabamos el contenido de la web
-                    file_name.write(req.content)
+                if book_directory == self.pdf_directory:
+                    file_extension = ".pdf"
+                    with open('{}/{}.{}'.format(book_directory, name, file_extension), 'wb') as file_name:
+                        # Obtenemos la web (que es el libro)
+                        req = requests.get(bookWebUrl.url)
+                        # Grabamos el contenido de la web
+                        file_name.write(req.content)
+                else:
+                    request = requests.get(bookWebUrl, stream=True)
+                    if request.status_code == 200:
+                        with requests.get(bookWebUrl , stream=True) as req:
+                            tmp_file = '{}/{}.pdf'.format(book_directory, name)
+                            with open(tmp_file, 'wb') as out_file:
+                                shutil.copyfileobj(req.raw, out_file)
+                                out_file.close()
+
             except Exception:  # urllib.error.URLError=="HTTP Error 404: Not Found":
                 print("\tNo se encuentra el documento {}...(snip).".format(name[:15]))
                 print("\tQuizas no tenga ebook.")
 
     def download(self):
         page_links_list, pdf_links_list, epub_links_list = self.get_files()
-        self.download_books(page_links_list, pdf_links_list, self.pdf_directory)
+        # self.download_books(page_links_list, pdf_links_list, self.pdf_directory)
         self.download_books(page_links_list, epub_links_list, self.epub_directory)
 
 
