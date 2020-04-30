@@ -54,6 +54,7 @@ class Downloader:
             except Exception:
                 # print("\tCannot find {}.".format(name))
                 # print("\tMaybe it doesn't have an EPUB format.")
+                pass
 
             pbar.update(1)
         pbar.close()
