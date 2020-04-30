@@ -8,4 +8,13 @@ Run the python script as `$ python get_books.py` to download both PDFs and Ebook
 This will name every file and separate them in folders.
 
 ### Option 2
-Run the bash script as `$ ./get_books.sh` (do `$ chmod +x get_books.sh` if didn't work) to download only the PDF version (possibly faster) but without names.
+(This method might be faster, but I haven't checked it.)
+
+To download the files without names (numbers),
+first do `$ chmod +x get_books_XXX.sh` to run the scripts.
+
+Then, run the bash scripts as:
+```
+$ ./get_books_PDF.sh 
+$ ./get_books_EPUB.sh 
+```

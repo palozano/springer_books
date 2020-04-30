@@ -1,7 +1,7 @@
 #!/bin/bash
 
-BOOKFILE="book_links_PDF.txt"
-BOOKFOLDER="PDFs"
+BOOKFILE="book_links_EPUB.txt"
+BOOKFOLDER="EPUBs"
 
 mkdir "$BOOKFOLDER"
 
