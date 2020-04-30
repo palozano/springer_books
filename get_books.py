@@ -52,8 +52,8 @@ class Downloader:
                     file_name.write(req.content)
 
             except Exception:
-                print("\tCannot find {}.".format(name))
-                print("\tMaybe it doesn't have an EPUB format.")
+                # print("\tCannot find {}.".format(name))
+                # print("\tMaybe it doesn't have an EPUB format.")
 
             pbar.update(1)
         pbar.close()
