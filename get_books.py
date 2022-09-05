@@ -1,16 +1,17 @@
+from dataclasses import dataclass
 import urllib.request
 from bs4 import BeautifulSoup
 import requests
-import subprocess
 import os
-import shutil
 from tqdm import tqdm
 
+
+@dataclass
 class Downloader:
 
-    page_links = "book_links_to_parse.txt"
-    pdf_links = "book_links_PDF.txt"
-    epub_links = "book_links_EPUB.txt"
+    page_links: str = "book_links_to_parse.txt"
+    pdf_links: str = "book_links_PDF.txt"
+    epub_links: str = "book_links_EPUB.txt"
 
     pdf_directory = "PDFs"
     epub_directory = "EPUBs"
@@ -41,14 +42,18 @@ class Downloader:
             pageWebUrl = urllib.request.urlopen(link_page)
             response = pageWebUrl.read()
 
-            soup = BeautifulSoup(response, 'html.parser')
-            name_box = soup.find('div', attrs={'class': 'page-title'})
-            name = name_box.text[1:-1].replace('\n',' - ')
+            soup = BeautifulSoup(response, "html.parser")
+            name_box = soup.find("div", attrs={"class": "page-title"})
+            name = name_box.text[1:-1].replace("\n", " - ")
 
             try:
                 bookWebUrl = urllib.request.urlopen(link_book)
-                file_extension = "pdf" if book_directory == self.pdf_directory else "epub"
-                with open('{}/{}.{}'.format(book_directory, name, file_extension), 'wb') as file_name:
+                file_extension = (
+                    "pdf" if book_directory == self.pdf_directory else "epub"
+                )
+                with open(
+                    "{}/{}.{}".format(book_directory, name, file_extension), "wb"
+                ) as file_name:
                     req = requests.get(bookWebUrl.url)
                     file_name.write(req.content)
 
@@ -64,7 +69,7 @@ class Downloader:
         self.download_books(page_links_list, epub_links_list, self.epub_directory)
 
 
-if __name__=="__main__":
+if __name__ == "__main__":
     downloader = Downloader()
     downloader.download()
 
